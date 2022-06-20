@@ -1,0 +1,80 @@
+.bot-control-panel {
+  border: 2px solid black;
+  margin: 1%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.control-header {
+  border: 2px solid blue;
+  width: fit-content;
+  text-align: center;
+}
+
+.direction-control {
+  border: 2px solid blue;
+  margin: 1%;
+  padding:2%;
+  width: fit-content;
+  display: grid;
+  gap: 5px 5px;
+  grid-template-columns: repeat(6, 50px);
+  grid-template-rows: repeat(2, 50px);
+
+}
+
+.btn-active {
+  border: 2px solid green;
+}
+
+.dir-btn {
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dir-btn:hover {
+  border: 2px solid green;
+}
+
+.dir-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.dir-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.dir-down {
+  grid-column: 2;
+  grid-row: 2;
+
+}
+
+.dir-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.dir-a {
+  grid-column: 5;
+  grid-row: 2;
+}
+
+.dir-b {
+  grid-column: 6;
+  grid-row: 2;
+}
+
+
+
+
+
+/* Keyboard */
+.keyboard-active {
+  border: 2px solid green;
+}
