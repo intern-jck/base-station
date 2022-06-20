@@ -1,5 +1,6 @@
 import React from "react";
 import BotControl from './BotControl.jsx';
+import './styles/App.css';
 
 const App = () => {
 

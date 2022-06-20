@@ -6,106 +6,62 @@ import './styles/BotControl.css';
 function BotControl(props) {
 
   const [keyboardActive, setKeyboardActive] = useState(false);
-  // const [buttonActive, setButtonActive] = useState(false);
-  // const [gamepadActive, setGamepadActive] = useState(false);
 
-  const [currentDirection, setCurrentDirection] = useState('');
-  const [currentSpeed, setCurrentSpeed] = useState(100);
-
-  // const zeroBotUrl = '';
   const roverBotUrl = 'http://192.168.1.110:3000';
 
 
-  const moveBot = (dir, spd)  => {
-    axios
-      .put(roverBotUrl + `/bot-move/`,
-        {
-          'dir': dir,
-          'spd': spd,
-        })
-      .then((response) => {
-        console.log(response.status);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
 
-  };
+  const handleKeyDown = (event) => {
 
-  const activateKeyboard = (event) => {
-    console.log(event.target);
-    const activate = keyboardActive;
-    event.target.classList.toggle('keyboard-active');
-    setKeyboardActive(!activate);
-
-  }
-
-  const onKeyPress = (event) => {
     event.preventDefault();
+    const target = event.target;
+    const name = event.name;
+    const key = event.key;
+    console.log('KEYBOARD', key);
 
-    // const target = event.target;
-    const keyCode = event.keyCode;
-    const keyChar =  String.fromCharCode(keyCode);
-    console.log('KEYBOARD', keyChar, keyCode);
-
-    switch (keyChar) {
-      case 'W':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+    target.classList.toggle('keyboard-active');
+    console.log(target.classList);
+    switch (key) {
+      case 'w':
         break;
-      case 'S':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      case 's':
         break;
-      case 'A':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      case 'a':
         break;
-      case 'D':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      case 'd':
         break;
-      case 'E':
-        // setCurrentDirection(keyChar);
-        let spd = currentSpeed + 10;
-        if (spd > 250) { spd = 255; }
-        setCurrentSpeed(spd);
-        moveBot(currentDirection, spd);
+      case 'e':
         break;
-      case 'Q':
-        setCurrentDirection(keyChar);
-        setCurrentSpeed(100);
-        moveBot(keyChar, 0);
+      case 'q':
         break;
       }
+
 
     };
 
   return (
     <div className="bot-control-panel">
       <h2 className="control-header">Rover Bot Control</h2>
-
       <div
-        className="direction-control"
-        onClick={activateKeyboard}
-        onKeyDown={onKeyPress}
-        tabIndex="0">
-        <div className="dir-btn dir-left"><GoArrowLeft /></div>
-        <div className="dir-btn dir-up"><GoArrowUp /></div>
-        <div className="dir-btn dir-down"><GoArrowDown /></div>
-        <div className="dir-btn dir-right"><GoArrowRight /></div>
-        <div className="dir-btn dir-a"><h2>A</h2></div>
-        <div className="dir-btn dir-b"><h2>B</h2></div>
-      </div>
-
-      {/* <div
         className="keyboard-control"
-        onClick={activateKeyboard}
-        onKeyDown={onKeyPress}
-        tabIndex="0">
-          Keyboard Control
-      </div> */}
-
+        onKeyDown={handleKeyDown}
+        tabIndex="0"><h2>ACTIVATE KEYBOARD</h2>
+      </div>
+      <div
+        className="keyboard-keys">
+        {/* Motor Control */}
+        <div className="ctl-btn dir-left"><h2>A</h2></div>
+        <div className="ctl-btn dir-up"><h2>W</h2></div>
+        <div className="ctl-btn dir-down"><h2>S</h2></div>
+        <div className="ctl-btn dir-right"><h2>D</h2></div>
+        <div className="ctl-btn dir-stop"><h2>Q</h2></div>
+        <div className="ctl-btn dir-faster"><h2>E</h2></div>
+        {/* Camera Control */}
+        <div className="ctl-btn pan-left"><GoArrowLeft size={40} /></div>
+        <div className="ctl-btn tilt-up"><GoArrowUp size={40} /></div>
+        <div className="ctl-btn tilt-down"><GoArrowDown size={40} /></div>
+        <div className="ctl-btn pan-right"><GoArrowRight size={40} /></div>
+        </div>
     </div>
   );
 
