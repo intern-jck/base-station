@@ -18,13 +18,6 @@ function BotControl(props) {
 
   const moveBot = (dir, spd)  => {
     axios
-      // .get(roverBotUrl + `/bot-move/${dir}/${spd}`)
-      // .then((response) => {
-      //   console.log(response.status);
-      // })
-      // .catch((error) => {
-      //   console.log(error.message);
-      // });
       .put(roverBotUrl + `/bot-move/`,
         {
           'dir': dir,
