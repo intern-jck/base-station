@@ -33,13 +33,16 @@ function BotControl(props) {
   };
 
   const activateKeyboard = (event) => {
+    console.log(event.target);
     const activate = keyboardActive;
-    event.target.classList.toggle('keyboard-active')
+    event.target.classList.toggle('keyboard-active');
     setKeyboardActive(!activate);
+
   }
 
   const onKeyPress = (event) => {
     event.preventDefault();
+
     // const target = event.target;
     const keyCode = event.keyCode;
     const keyChar =  String.fromCharCode(keyCode);
@@ -74,15 +77,19 @@ function BotControl(props) {
         setCurrentSpeed(100);
         moveBot(keyChar, 0);
         break;
-    }
+      }
 
-  };
+    };
 
   return (
     <div className="bot-control-panel">
-      <h2 className="control-header">Zero Bot Control</h2>
+      <h2 className="control-header">Rover Bot Control</h2>
 
-      <div className="direction-control">
+      <div
+        className="direction-control"
+        onClick={activateKeyboard}
+        onKeyDown={onKeyPress}
+        tabIndex="0">
         <div className="dir-btn dir-left"><GoArrowLeft /></div>
         <div className="dir-btn dir-up"><GoArrowUp /></div>
         <div className="dir-btn dir-down"><GoArrowDown /></div>
@@ -91,13 +98,13 @@ function BotControl(props) {
         <div className="dir-btn dir-b"><h2>B</h2></div>
       </div>
 
-      <div
+      {/* <div
         className="keyboard-control"
         onClick={activateKeyboard}
         onKeyDown={onKeyPress}
         tabIndex="0">
           Keyboard Control
-      </div>
+      </div> */}
 
     </div>
   );
