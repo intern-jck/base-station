@@ -1,7 +1,8 @@
 import axios from 'axios';
-const roverBotUrl = 'http://192.168.1.110:3000';
+const roverBotUrl = 'http://192.168.1.93:3000';
 
 export const moveBot = (keyCode, spd)  => {
+
   axios
     .put(roverBotUrl + `/bot-move`,
       {

@@ -8,6 +8,7 @@ function BotControl(props) {
 
   const [keyboardActive, setKeyboardActive] = useState(false);
   const [botSpeed, setBotSpeed] = useState(100);
+  const [botDirection, setBotDirection] = useState(0);
   const [camSpeed, setCamSpeed] = useState(10);
 
   const handleKeyUp = (event) => {
@@ -19,7 +20,7 @@ function BotControl(props) {
 
     console.log('KEYBOARD UP', key, keyCode);
 
-    moveBot(keyCode, botSpeed);
+    // moveBot(keyCode, botSpeed);
 
 
     switch(key) {
@@ -57,41 +58,59 @@ function BotControl(props) {
 
     target.classList.toggle('keyboard-active');
 
-    moveBot(keyCode, botSpeed);
+    // if(key === 'e') {
 
-    // switch (key) {
-    //   case 'w':
-    //     moveBot(keyCode, botSpeed);
-    //     break;
-    //   case 's':
-    //     moveBot(keyCode, botSpeed);
-    //     break;
-    //   case 'a':
-    //     moveBot(keyCode, botSpeed);
-    //     break;
-    //   case 'd':
-    //     moveBot(keyCode, botSpeed);
-    //     break;
-    //   case 'e':
-    //     moveBot(keyCode, botSpeed);
-    //     break;
-    //   case 'q':
-    //     moveBot(keyCode, 0);
-    //     break;
+    // } else if (key === 'q') {
+    //   setBotSpeed(0);
+    // }
 
-      // case 'ArrowUp':
-      //   moveBot(keyCode, camSpeed);
-      //   break;
-      // case 'ArrowDown':
-      //   moveBot(keyCode, camSpeed);
-      //   break;
-      // case 'ArrowLeft':
-      //   moveBot(keyCode, camSpeed);
-      //   break;
-      // case 'ArrowRight':
-      //   moveBot(keyCode, camSpeed);
-      //   break;
-      // }
+    // moveBot(keyCode, botSpeed);
+
+    switch (key) {
+      case 'w':
+        setBotDirection(keyCode);
+        moveBot(botDirection, botSpeed);
+        break;
+      case 's':
+        setBotDirection(keyCode);
+        moveBot(botDirection, botSpeed);
+        break;
+      case 'a':
+        setBotDirection(keyCode);
+        moveBot(botDirection, botSpeed);
+        break;
+      case 'd':
+        setBotDirection(keyCode);
+        moveBot(botDirection, botSpeed);
+        break;
+      case 'e':
+        let speed = botSpeed;
+        speed += 5;
+        if (speed >= 255) {
+          speed = 255;
+        }
+        setBotSpeed(speed);
+        moveBot(botDirection, botSpeed);
+        break;
+      case 'q':
+        setBotSpeed(150);
+        setBotDirection(keyCode);
+        moveBot(botDirection, 0);
+        break;
+
+      case 'ArrowUp':
+        moveBot(keyCode, camSpeed);
+        break;
+      case 'ArrowDown':
+        moveBot(keyCode, camSpeed);
+        break;
+      case 'ArrowLeft':
+        moveBot(keyCode, camSpeed);
+        break;
+      case 'ArrowRight':
+        moveBot(keyCode, camSpeed);
+        break;
+      }
 
 
     };
