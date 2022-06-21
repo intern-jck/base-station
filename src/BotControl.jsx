@@ -1,50 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight } from 'react-icons/go';
 import './styles/BotControl.css';
-import {moveBot} from './botHelpers.js';
+import { moveBot, debounce } from './botHelpers.js';
 
 function BotControl(props) {
 
   const [keyboardActive, setKeyboardActive] = useState(false);
-  const [botSpeed, setBotSpeed] = useState(100);
-  const [botDirection, setBotDirection] = useState(0);
-  const [camSpeed, setCamSpeed] = useState(10);
 
-  const handleKeyUp = (event) => {
-    event.preventDefault();
-    const target = event.target;
-    const name = target.name;
-    const key = event.key;
-    const keyCode = event.keyCode;
-
-    console.log('KEYBOARD UP', key, keyCode);
-
-    // moveBot(keyCode, botSpeed);
-
-
-    switch(key) {
-      case 'w':
-        moveBot(0, 0);
-        break;
-      case 's':
-        moveBot(0, 0);
-        break;
-      case 'a':
-        moveBot(1, 0);
-        break;
-      case 'd':
-        moveBot(1, 0);
-        break;
-      case 'e':
-        moveBot(keyCode, botSpeed);
-        break;
-      case 'q':
-        moveBot(keyCode, 0);
-        break;
-    }
-
-  }
+  const [botState, setBotState] = useState({ dir: 0, str: 90, spd: 100 });
 
   const handleKeyDown = (event) => {
 
@@ -53,67 +17,66 @@ function BotControl(props) {
     const name = target.name;
     const key = event.key;
     const keyCode = event.keyCode;
+    let currentState = botState;
+    console.log('BOT', currentState);
 
-    console.log('KEYBOARD', key, keyCode);
-
-    target.classList.toggle('keyboard-active');
-
-    // if(key === 'e') {
-
-    // } else if (key === 'q') {
-    //   setBotSpeed(0);
-    // }
-
-    // moveBot(keyCode, botSpeed);
-
-    switch (key) {
+    switch(key) {
+      // Forward
       case 'w':
-        setBotDirection(keyCode);
-        moveBot(botDirection, botSpeed);
+        currentState.dir = 1;
+        currentState.str = 90;
+        setBotState(currentState);
         break;
+      // Backward
       case 's':
-        setBotDirection(keyCode);
-        moveBot(botDirection, botSpeed);
+        currentState.dir = 2;
+        currentState.str = 90;
+        setBotState(currentState);
         break;
+      // Left
       case 'a':
-        setBotDirection(keyCode);
-        moveBot(botDirection, botSpeed);
+        currentState.str = 160;
+        setBotState(currentState);
         break;
+      // Right
       case 'd':
-        setBotDirection(keyCode);
-        moveBot(botDirection, botSpeed);
+        currentState.str = 30;
+        setBotState(currentState);
         break;
+      // Accelerate
       case 'e':
-        let speed = botSpeed;
+        let speed = currentState.spd;
         speed += 5;
         if (speed >= 255) {
           speed = 255;
         }
-        setBotSpeed(speed);
-        moveBot(botDirection, botSpeed);
+        currentState.spd = speed;
+        setBotState(currentState);
         break;
+      // Stop
       case 'q':
-        setBotSpeed(150);
-        setBotDirection(keyCode);
-        moveBot(botDirection, 0);
+        currentState.dir = 0;
+        currentState.str = 90;
+        currentState.spd = 100;
+        setBotState(currentState);
         break;
 
-      case 'ArrowUp':
-        moveBot(keyCode, camSpeed);
-        break;
-      case 'ArrowDown':
-        moveBot(keyCode, camSpeed);
-        break;
-      case 'ArrowLeft':
-        moveBot(keyCode, camSpeed);
-        break;
-      case 'ArrowRight':
-        moveBot(keyCode, camSpeed);
-        break;
-      }
+      // case 'ArrowUp':
+      //   moveBot(keyCode, camSpeed);
+      //   break;
+      // case 'ArrowDown':
+      //   moveBot(keyCode, camSpeed);
+      //   break;
+      // case 'ArrowLeft':
+      //   moveBot(keyCode, camSpeed);
+      //   break;
+      // case 'ArrowRight':
+      //   moveBot(keyCode, camSpeed);
+      //   break;
+    }
 
-
-    };
+    debounce(moveBot(botState));
+  }
 
   return (
     <div className="bot-control-panel">
@@ -121,7 +84,7 @@ function BotControl(props) {
       <div
         className="keyboard-control"
         onKeyDown={handleKeyDown}
-        onKeyUp={handleKeyUp}
+        // onKeyUp={handleKeyUp}
         tabIndex="0"><h2>ACTIVATE KEYBOARD</h2>
       </div>
 
