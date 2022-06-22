@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight } from 'react-icons/go';
+import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight, GoDeviceCamera } from 'react-icons/go';
 import './styles/BotControl.css';
-import { moveBot, debounce } from './botHelpers.js';
+import { moveBot, debounce, getPhoto } from './botHelpers.js';
+const roverBotUrl = 'http://192.168.1.93:3000';
 
 function BotControl(props) {
 
-  const [keyboardActive, setKeyboardActive] = useState(false);
-
   const [botState, setBotState] = useState({ dir: 0, str: 90, spd: 100 });
+  const [botImg, setBotImg] = useState('');
+
+  useEffect(() => {
+    console.log(botImg);
+  }, [botImg]);
 
   const handleKeyDown = (event) => {
 
@@ -60,6 +64,14 @@ function BotControl(props) {
         currentState.spd = 100;
         setBotState(currentState);
         break;
+      // Take photo
+      case 'p':
+        getPhoto()
+        .then((img) => {
+          const imgPath = roverBotUrl + '/' + img;
+          setBotImg(imgPath);
+        });
+        break;
 
       // case 'ArrowUp':
       //   moveBot(keyCode, camSpeed);
@@ -80,11 +92,10 @@ function BotControl(props) {
 
   return (
     <div className="bot-control-panel">
-      <h2 className="control-header">Rover Bot Control</h2>
+      <img className="bot-img" src={botImg} />
       <div
         className="keyboard-control"
         onKeyDown={handleKeyDown}
-        // onKeyUp={handleKeyUp}
         tabIndex="0"><h2>ACTIVATE KEYBOARD</h2>
       </div>
 
@@ -104,6 +115,8 @@ function BotControl(props) {
         <div id="ArrowUp" className="ctl-btn tilt-up"><GoArrowUp size={40} /></div>
         <div id="ArrowDown" className="ctl-btn tilt-down"><GoArrowDown size={40} /></div>
         <div id="ArrowRight" className="ctl-btn pan-right"><GoArrowRight size={40} /></div>
+        <div id="p" className="ctl-btn cam-pic"><GoDeviceCamera size={40} /></div>
+        {/* <div id="ArrowRight" className="ctl-btn pan-right"><GoArrowRight size={40} /></div> */}
         </div>
     </div>
   );
