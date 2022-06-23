@@ -1,5 +1,5 @@
 import axios from 'axios';
-const roverBotUrl = 'http://192.168.1.93:3000';
+const roverBotUrl = 'http://192.168.1.98:3000';
 
 export const getPhoto = () => {
   return axios

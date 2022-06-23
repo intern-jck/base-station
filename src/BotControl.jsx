@@ -3,12 +3,14 @@ import axios from 'axios';
 import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight, GoDeviceCamera } from 'react-icons/go';
 import './styles/BotControl.css';
 import { moveBot, debounce, getPhoto } from './botHelpers.js';
-const roverBotUrl = 'http://192.168.1.93:3000';
+const roverBotUrl = 'http://192.168.1.94:3000';
+
 
 function BotControl(props) {
 
   const [botState, setBotState] = useState({ dir: 0, str: 90, spd: 100 });
   const [botImg, setBotImg] = useState('');
+
 
   useEffect(() => {
     console.log(botImg);
@@ -28,23 +30,23 @@ function BotControl(props) {
       // Forward
       case 'w':
         currentState.dir = 1;
-        currentState.str = 90;
+        currentState.str = 95;
         setBotState(currentState);
         break;
       // Backward
       case 's':
         currentState.dir = 2;
-        currentState.str = 90;
+        currentState.str = 95;
         setBotState(currentState);
         break;
       // Left
       case 'a':
-        currentState.str = 160;
+        currentState.str = 30;
         setBotState(currentState);
         break;
       // Right
       case 'd':
-        currentState.str = 30;
+        currentState.str = 140;
         setBotState(currentState);
         break;
       // Accelerate
@@ -60,8 +62,8 @@ function BotControl(props) {
       // Stop
       case 'q':
         currentState.dir = 0;
-        currentState.str = 90;
-        currentState.spd = 100;
+        currentState.str = 95;
+        currentState.spd = 70;
         setBotState(currentState);
         break;
       // Take photo
@@ -85,6 +87,7 @@ function BotControl(props) {
       // case 'ArrowRight':
       //   moveBot(keyCode, camSpeed);
       //   break;
+
     }
 
     debounce(moveBot(botState));
@@ -92,11 +95,14 @@ function BotControl(props) {
 
   return (
     <div className="bot-control-panel">
-      <img className="bot-img" src={botImg} />
+      <div>
+        <img className="bot-img" src={botImg} />
+      </div>
       <div
         className="keyboard-control"
         onKeyDown={handleKeyDown}
-        tabIndex="0"><h2>ACTIVATE KEYBOARD</h2>
+        tabIndex="0">
+          <h2>ACTIVATE KEYBOARD</h2>
       </div>
 
       <div
