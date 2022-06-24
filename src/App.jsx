@@ -7,9 +7,9 @@ const App = () => {
   return (
     <div className="main-div">
       <h1>Base Station</h1>
-      <div className="cam-div">
+      {/* <div className="cam-div">
         <img className="rover-cam" src="http://192.168.1.94:3000/rover-cam.mjpg" />
-      </div>
+      </div> */}
       <BotControl />
     </div>
   )

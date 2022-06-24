@@ -8,7 +8,7 @@ const roverBotUrl = 'http://192.168.1.94:3000';
 
 function BotControl(props) {
 
-  const [botState, setBotState] = useState({ dir: 0, str: 90, spd: 100 });
+  const [botState, setBotState] = useState({ motorR: 0, motorL: 0, spd: 100 });
   const [botImg, setBotImg] = useState('');
 
 
@@ -29,24 +29,26 @@ function BotControl(props) {
     switch(key) {
       // Forward
       case 'w':
-        currentState.dir = 1;
-        currentState.str = 95;
+        currentState.motorR = 1;
+        currentState.motorL = 1;
         setBotState(currentState);
         break;
       // Backward
       case 's':
-        currentState.dir = 2;
-        currentState.str = 95;
+        currentState.motorR = 2;
+        currentState.motorL = 2;
         setBotState(currentState);
         break;
       // Left
       case 'a':
-        currentState.str = 30;
+        currentState.motorR = 2;
+        currentState.motorL = 1;
         setBotState(currentState);
         break;
       // Right
       case 'd':
-        currentState.str = 140;
+        currentState.motorR = 2;
+        currentState.motorL = 1;
         setBotState(currentState);
         break;
       // Accelerate
@@ -61,19 +63,19 @@ function BotControl(props) {
         break;
       // Stop
       case 'q':
-        currentState.dir = 0;
-        currentState.str = 95;
+        currentState.motorR = 0;
+        currentState.motorL = 0;
         currentState.spd = 70;
         setBotState(currentState);
         break;
       // Take photo
-      case 'p':
-        getPhoto()
-        .then((img) => {
-          const imgPath = roverBotUrl + '/' + img;
-          setBotImg(imgPath);
-        });
-        break;
+      // case 'p':
+      //   getPhoto()
+      //   .then((img) => {
+      //     const imgPath = roverBotUrl + '/' + img;
+      //     setBotImg(imgPath);
+      //   });
+      //   break;
 
       // case 'ArrowUp':
       //   moveBot(keyCode, camSpeed);
@@ -95,9 +97,9 @@ function BotControl(props) {
 
   return (
     <div className="bot-control-panel">
-      <div>
+      {/* <div>
         <img className="bot-img" src={botImg} />
-      </div>
+      </div> */}
       <div
         className="keyboard-control"
         onKeyDown={handleKeyDown}
@@ -117,11 +119,11 @@ function BotControl(props) {
         <div id="e" className="ctl-btn dir-faster"><h2>E</h2></div>
 
         {/* Camera Control */}
-        <div id="ArrowLeft" className="ctl-btn pan-left"><GoArrowLeft size={40} /></div>
+        {/* <div id="ArrowLeft" className="ctl-btn pan-left"><GoArrowLeft size={40} /></div>
         <div id="ArrowUp" className="ctl-btn tilt-up"><GoArrowUp size={40} /></div>
         <div id="ArrowDown" className="ctl-btn tilt-down"><GoArrowDown size={40} /></div>
-        <div id="ArrowRight" className="ctl-btn pan-right"><GoArrowRight size={40} /></div>
-        <div id="p" className="ctl-btn cam-pic"><GoDeviceCamera size={40} /></div>
+        <div id="ArrowRight" className="ctl-btn pan-right"><GoArrowRight size={40} /></div> */}
+        {/* <div id="p" className="ctl-btn cam-pic"><GoDeviceCamera size={40} /></div> */}
         {/* <div id="ArrowRight" className="ctl-btn pan-right"><GoArrowRight size={40} /></div> */}
         </div>
     </div>
