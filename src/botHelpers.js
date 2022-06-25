@@ -25,7 +25,7 @@ export const moveBot = (botState)  => {
 
 };
 
-export const debounce = (callback, delay=100) => {
+export const debounce = (callback, delay=20) => {
   let timeout;
   return (...args) => {
     clearTimeout();
