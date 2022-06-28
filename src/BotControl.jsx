@@ -30,7 +30,6 @@ function BotControl() {
     let currentState = botState;
     let currentKey = document.getElementById(key);
     currentKey.classList.toggle('active');
-    console.log(currentKey.classList);
   };
 
   const handleKeyDown = (event) => {
@@ -43,7 +42,6 @@ function BotControl() {
     console.log('BOT', currentState);
     let currentKey = document.getElementById(key);
     currentKey.classList.toggle('active');
-    console.log(currentKey.classList);
 
     switch(key) {
       // Forward
