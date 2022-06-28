@@ -10,7 +10,6 @@ export const getGPS = () => {
     .catch((error) => ( console.log(error) ));
 }
 
-
 export const getPhoto = () => {
   return axios
     .get(roverBotUrl + '/cam-pic', {
@@ -32,7 +31,6 @@ export const moveBot = (botState)  => {
     .catch((error) => {
       console.log(error.message);
     });
-
 };
 
 export const debounce = (callback, delay=20) => {

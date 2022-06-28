@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight, GoDeviceCamera } from 'react-icons/go';
 import './styles/BotControl.css';
 import { moveBot, debounce, getPhoto, getGPS } from './botHelpers.js';
 
@@ -9,18 +8,32 @@ function BotControl() {
 
   const [botState, setBotState] = useState({ dir: 0, spd: 100 });
   const [botImg, setBotImg] = useState('');
-  const [currentGps, setCurrentGps] = useState({});
+  const [currentGps, setCurrentGps] = useState([]);
 
   useEffect(() => {
     setInterval(() => {
       axios.get(roverBotUrl + '/bot-gps')
       .then((response) => {
-        console.log(response.data.data);
+        // console.log('GOT', response.data.data);
         // return response.data;
+        setCurrentGps(response.data.data)
       })
       .catch((error) => ( console.log(error) ));
     }, 250);
   }, []);
+
+  const handleKeyUp = (event) => {
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
+    const key = event.key;
+    const keyCode = event.keyCode;
+    let currentState = botState;
+    console.log('BOT', currentState);
+    let currentKey = document.getElementById(key);
+    currentKey.classList.toggle('active');
+    console.log(currentKey.classList);
+  };
 
   const handleKeyDown = (event) => {
     event.preventDefault();
@@ -30,6 +43,10 @@ function BotControl() {
     const keyCode = event.keyCode;
     let currentState = botState;
     console.log('BOT', currentState);
+    let currentKey = document.getElementById(key);
+    currentKey.classList.toggle('active');
+    console.log(currentKey.classList);
+
     switch(key) {
       // Forward
       case 'w':
@@ -76,6 +93,7 @@ function BotControl() {
       <div
         className="keyboard-control"
         onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
         tabIndex="0">
           <h2>ACTIVATE KEYBOARD</h2>
       </div>
