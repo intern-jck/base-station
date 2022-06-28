@@ -14,8 +14,7 @@ function BotControl() {
     setInterval(() => {
       axios.get(roverBotUrl + '/bot-gps')
       .then((response) => {
-        // console.log('GOT', response.data.data);
-        // return response.data;
+        console.log('GOT', response.data.data);
         setCurrentGps(response.data.data)
       })
       .catch((error) => ( console.log(error) ));
@@ -29,7 +28,6 @@ function BotControl() {
     const key = event.key;
     const keyCode = event.keyCode;
     let currentState = botState;
-    console.log('BOT', currentState);
     let currentKey = document.getElementById(key);
     currentKey.classList.toggle('active');
     console.log(currentKey.classList);
@@ -97,10 +95,9 @@ function BotControl() {
         tabIndex="0">
           <h2>ACTIVATE KEYBOARD</h2>
       </div>
-
-      <div
-        className="keyboard-keys">
-        {/* Motor Control */}
+      <h1>GPS: {currentGps}</h1>
+      <h1>Direction: {botState.dir} Speed: {botState.spd}</h1>
+      <div className="keyboard-keys">
         <div id="a" className="ctl-btn dir-left"><h2>A</h2></div>
         <div id="w" className="ctl-btn dir-up"><h2>W</h2></div>
         <div id="s" className="ctl-btn dir-down"><h2>S</h2></div>

@@ -22,7 +22,7 @@
 }
 
 .bot-control-panel {
-  border: 4px solid blue;
+  /* border: 4px solid blue; */
   width: 60vw;
   margin: 1%;
   display: flex;
@@ -37,31 +37,33 @@
 }
 
 .keyboard-control {
-  border: 2px solid black;
+  border: 6px solid black;
   padding: 2%;
 }
 
 .keyboard-control:focus {
-  border: 8px solid green;
+  /* border: 8px solid green; */
+  background: green;
 }
 
 .keyboard-keys {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   margin: 1%;
   padding:2%;
   /* width: fit-content; */
   display: grid;
   gap: 5px 5px;
-  grid-template-columns: repeat(3, 50px);
-  grid-template-rows: repeat(2, 50px);
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(2, 100px);
 }
 
 .active {
-  border: 4px solid green;
+  background: green;
 }
 
 .ctl-btn {
-  /* border: 2px solid black; */
+  border: 6px solid black;
+  font-size: 140%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +71,7 @@
 
 .ctl-btn:hover {
   /* border: 2px solid green; */
-  color: green;
+  background: green;
 }
 
 /* Motor Contorl */
