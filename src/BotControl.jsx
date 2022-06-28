@@ -1,104 +1,108 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GoArrowUp, GoArrowDown, GoArrowLeft, GoArrowRight } from 'react-icons/go';
 import './styles/BotControl.css';
+import { moveBot, debounce, getPhoto, getGPS } from './botHelpers.js';
 
-function BotControl(props) {
+const roverBotUrl = 'http://192.168.1.98:3000';
+function BotControl() {
 
-  const [keyboardActive, setKeyboardActive] = useState(false);
-  // const [buttonActive, setButtonActive] = useState(false);
-  // const [gamepadActive, setGamepadActive] = useState(false);
+  const [botState, setBotState] = useState({ dir: 0, spd: 100 });
+  const [botImg, setBotImg] = useState('');
+  const [currentGps, setCurrentGps] = useState([]);
 
-  const [currentDirection, setCurrentDirection] = useState('');
-  const [currentSpeed, setCurrentSpeed] = useState(100);
-
-  // const zeroBotUrl = '';
-  const roverBotUrl = 'http://192.168.1.110:3000';
-
-
-  const moveBot = (dir, spd)  => {
-    axios
-      .put(roverBotUrl + `/bot-move/`,
-        {
-          'dir': dir,
-          'spd': spd,
-        })
+  useEffect(() => {
+    setInterval(() => {
+      axios.get(roverBotUrl + '/bot-gps')
       .then((response) => {
-        console.log(response.status);
+        console.log('GOT', response.data.data);
+        setCurrentGps(response.data.data)
       })
-      .catch((error) => {
-        console.log(error.message);
-      });
+      .catch((error) => ( console.log(error) ));
+    }, 250);
+  }, []);
 
+  const handleKeyUp = (event) => {
+    event.preventDefault();
+    const target = event.target;
+    const name = target.name;
+    const key = event.key;
+    const keyCode = event.keyCode;
+    let currentState = botState;
+    let currentKey = document.getElementById(key);
+    currentKey.classList.toggle('active');
   };
 
-  const activateKeyboard = (event) => {
-    const activate = keyboardActive;
-    event.target.classList.toggle('keyboard-active')
-    setKeyboardActive(!activate);
-  }
-
-  const onKeyPress = (event) => {
+  const handleKeyDown = (event) => {
     event.preventDefault();
-    // const target = event.target;
+    const target = event.target;
+    const name = target.name;
+    const key = event.key;
     const keyCode = event.keyCode;
-    const keyChar =  String.fromCharCode(keyCode);
-    console.log('KEYBOARD', keyChar, keyCode);
+    let currentState = botState;
+    console.log('BOT', currentState);
+    let currentKey = document.getElementById(key);
+    currentKey.classList.toggle('active');
 
-    switch (keyChar) {
-      case 'W':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+    switch(key) {
+      // Forward
+      case 'w':
+        currentState.dir = 1;
+        setBotState(currentState);
         break;
-      case 'S':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      // Backward
+      case 's':
+        currentState.dir = 2;
+        setBotState(currentState);
         break;
-      case 'A':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      // Left
+      case 'a':
+        currentState.dir = 3;
+        setBotState(currentState);
         break;
-      case 'D':
-        setCurrentDirection(keyChar);
-        moveBot(keyChar, currentSpeed);
+      // Right
+      case 'd':
+        currentState.dir = 4;
+        setBotState(currentState);
         break;
-      case 'E':
-        // setCurrentDirection(keyChar);
-        let spd = currentSpeed + 10;
-        if (spd > 250) { spd = 255; }
-        setCurrentSpeed(spd);
-        moveBot(currentDirection, spd);
+      // Accelerate
+      case 'e':
+        let speed = currentState.spd;
+        speed += 5;
+        if (speed >= 255) {
+          speed = 255;
+        }
+        currentState.spd = speed;
+        setBotState(currentState);
         break;
-      case 'Q':
-        setCurrentDirection(keyChar);
-        setCurrentSpeed(100);
-        moveBot(keyChar, 0);
+      // Stop
+      case 'q':
+        currentState.dir = 0;
+        currentState.spd = 70;
+        setBotState(currentState);
         break;
     }
-
-  };
+    debounce(moveBot(botState));
+  }
 
   return (
     <div className="bot-control-panel">
-      <h2 className="control-header">Zero Bot Control</h2>
-
-      <div className="direction-control">
-        <div className="dir-btn dir-left"><GoArrowLeft /></div>
-        <div className="dir-btn dir-up"><GoArrowUp /></div>
-        <div className="dir-btn dir-down"><GoArrowDown /></div>
-        <div className="dir-btn dir-right"><GoArrowRight /></div>
-        <div className="dir-btn dir-a"><h2>A</h2></div>
-        <div className="dir-btn dir-b"><h2>B</h2></div>
-      </div>
-
       <div
         className="keyboard-control"
-        onClick={activateKeyboard}
-        onKeyDown={onKeyPress}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
         tabIndex="0">
-          Keyboard Control
+          <h2>ACTIVATE KEYBOARD</h2>
       </div>
-
+      <h1>GPS: {currentGps}</h1>
+      <h1>Direction: {botState.dir} Speed: {botState.spd}</h1>
+      <div className="keyboard-keys">
+        <div id="a" className="ctl-btn dir-left"><h2>A</h2></div>
+        <div id="w" className="ctl-btn dir-up"><h2>W</h2></div>
+        <div id="s" className="ctl-btn dir-down"><h2>S</h2></div>
+        <div id="d" className="ctl-btn dir-right"><h2>D</h2></div>
+        <div id="q" className="ctl-btn dir-stop"><h2>Q</h2></div>
+        <div id="e" className="ctl-btn dir-faster"><h2>E</h2></div>
+        </div>
     </div>
   );
 
